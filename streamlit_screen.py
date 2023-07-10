@@ -16,23 +16,5 @@ def radio_for_bedrooms(coeff):
     st.write("On average, if a house has", totalRooms, "total rooms, the price of the house may be around $", coeff*totalRooms)
     
     st.session_state['PriceChange'] = st.session_state['Price'] - totalRooms
-    st.session_state['Price'] = totalRooms
+    st.session_state['Price'] = st.session_state['Price'] - totalRooms
     
-
-# def sidebar_price(price, metric, update=False): # down should either be 'up' or 'down'
-    
-#     if update:
-#         # Using "with" notation
-        
-#         metric.update(label="Price", value=price, delta=price)
-            
-# def sidebar_price_update(new_price): # down should either be 'up' or 'down'
-
-#     # Using "with" notation
-#     with st.sidebar:
-#         title = st.title(
-#             "Predicted Price of the house"
-#         )
-#         st.metric.update(value =new_price, delta)
-
-        
