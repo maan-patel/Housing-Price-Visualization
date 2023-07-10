@@ -2,23 +2,39 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import numpy as np
-import pandas as pd 
+import pandas as pd
 from sklearn.linear_model import LinearRegression
+from machine_learning_model import regression
+from streamlit_screen import *
+import time
 
-st.title('Insight on Factors that affect Housing Prices')
+if __name__ == "__main__":
 
-raw_data_train = pd.read_csv('https://raw.githubusercontent.com/jmpark0808/pl_mnist_example/main/train_hp_msci436.csv')
-df = raw_data_train.select_dtypes(include = ['float64', 'int64']).fillna(0) 
-X = df.values[:, 1:-1]
-y = df.values[:, -1]
-reg = LinearRegression().fit(X, y)
-coefficients = reg.coef_
+    intro()
 
-columns = df.columns[1:-1]
+    MLModel = regression()
+    reg = MLModel['model']
+    df = MLModel['df']
 
-coefficients
-columns
+    coefficients = reg.coef_
+    columns = df.columns[1:-1]
 
+    lin_reg = pd.DataFrame(zip(columns, coefficients))
+    lin_reg
+    totalRms = columns.get_loc('TotRmsAbvGrd')
+    totalRmsCoeff = coefficients[totalRms]
 
+    if 'Price' not in st.session_state:
+        st.session_state['Price'] = 1000000
 
+    if 'PriceChange' not in st.session_state:
+        st.session_state['PriceChange'] = 0
 
+    radio_for_bedrooms(totalRmsCoeff)
+
+    with st.sidebar:
+        title = st.title(
+            "Predicted Price of the house"
+        )
+        metric = st.metric(
+            label="Price", value=st.session_state['Price'], delta=st.session_state['PriceChange'])
