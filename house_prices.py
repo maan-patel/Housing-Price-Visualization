@@ -5,7 +5,7 @@ import pandas as pd
 from machine_learning_model import *
 from streamlit_screen import *
 import locale
-locale.setlocale(locale.LC_ALL, '')
+locale.setlocale(locale.LC_ALL,'en_CA.UTF-8')
 
 if __name__ == "__main__":
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     
     if 'Price' not in st.session_state:
         st.session_state['Price'] = intercept
-        
+
     get_all_input(df_summary_numerical,columns,coefficients,intercept)
 
     with st.sidebar:
