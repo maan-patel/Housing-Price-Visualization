@@ -5,6 +5,7 @@ import pandas as pd
 from machine_learning_model import *
 from streamlit_screen import *
 import locale
+import charts as c
 locale.setlocale(locale.LC_ALL, '')
 
 if __name__ == "__main__":
