@@ -39,7 +39,7 @@ def number_of_garage_cars(coeff, min, max):
 
 def overall_condition(coeff, min, max):
     st.subheader(
-        "How much overall house condition do you want? (material and finish quality)")
+        "What overall house condition do you want? (material and finish quality)")
     number = st.number_input(f'Insert a number (min: {min}, max: {max})', min_value=int(
         min), max_value=int(max), step=1)
     return number
@@ -53,6 +53,14 @@ def overall_age(coeff, min, max):
     # st.write("On average, if a house has", number, "total condition, the price of the house may be around $", coeff*number)
     return old
 
+# def overall_reno_age(coeff, min, max):
+#     st.subheader("Whe you want your house?")
+#     old = st.slider('Slide to the desired number (in years)',
+#                     min_value=int(min), max_value=int(max))
+#     # st.write("On average, if a house has", number, "total condition, the price of the house may be around $", coeff*number)
+#     return old
+
+
 
 def number_of_wodden_deck_area(coeff, min, max):
     st.subheader("How much Wodden Deck Area do you want? (in sq feet)")
@@ -64,8 +72,8 @@ def number_of_wodden_deck_area(coeff, min, max):
 def do_you_want_pool(coeff, min, max):
     st.subheader("Do you want a Pool?")
     option = st.selectbox(
-    'PLease enter Yes/No',
-    ('No', 'Yes'))
+    'Please enter Yes/No',
+    ('No', 'Yes'),key=2)
     
     if option == 'Yes':
         st.subheader("How much Pool Area Area do you want? (in sq feet)")
@@ -79,13 +87,13 @@ def do_you_want_pool(coeff, min, max):
 def do_you_want_fireplace(coeff, min, max):
     st.subheader("Do you want a Fireplace?")
     option = st.selectbox(
-    'PLease enter Yes/No',
-    ('No', 'Yes'))
+    'Please enter Yes/No',
+    ('No', 'Yes'),key=1)
     
     if option == 'Yes':
-        st.subheader("How much Pool Area Area do you want? (in sq feet)")
+        st.subheader("How many Fireplaces do you want?")
         number = st.number_input(f'Insert a number (min: {min}, max: {max})', min_value=int(
-            min), max_value=int(max), step =50)
+            min), max_value=int(max), step =1)
         return number
     else:
         return 0

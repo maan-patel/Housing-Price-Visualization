@@ -28,15 +28,16 @@ def get_all_input(df, columns, coefficients, intercept):
         'GarageCars')], df['GarageCars']['min'], df['GarageCars']['max'])
     old = overall_age(coefficients[columns.get_loc(
         'YearBuilt')], 2011-int(df['YearBuilt']['min']), 2011-int(df['YearBuilt']['max']))
-    # deck_area = number_of_wodden_deck_area(coefficients[columns.get_loc(
-    #     'WoodDeckSF')], df['WoodDeckSF']['min'], df['WoodDeckSF']['max'])
+    # renovated = overall_reno_age(coefficients[columns.get_loc(
+    #     'years_since_remod')], 2011-int(df['years_since_remod']['min']), 2011-int(df['years_since_remod']['max']))
     pool_area = do_you_want_pool(coefficients[columns.get_loc(
         'PoolArea')], df['PoolArea']['min'], df['PoolArea']['max'])
-
+    fireplaces = do_you_want_fireplace(coefficients[columns.get_loc(
+        'Fireplaces')], df['Fireplaces']['min'], df['Fireplaces']['max'])
 
     linear_regression_for_new_price = calculate_new_price(
         intercept, columns, coefficients, rooms, 'TotRmsAbvGrd', footage, 'LotArea', condition,
-        'OverallQual', old, 'YearBuilt', pool_area, 'PoolArea',
+        'OverallQual', old, 'YearBuilt', pool_area, 'PoolArea', fireplaces, 'Fireplaces',
         fullbath_rooms, 'FullBath', halfbath_rooms, 'HalfBath', cars, 'GarageCars')
     if 'PriceChange' not in st.session_state:
         st.session_state['PriceChange'] = 0
