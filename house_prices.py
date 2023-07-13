@@ -4,8 +4,6 @@ import numpy as np
 import pandas as pd
 from machine_learning_model import *
 from streamlit_screen import *
-import locale
-locale.setlocale(locale.LC_ALL,'en_CA.UTF-8')
 
 if __name__ == "__main__":
 
@@ -32,5 +30,5 @@ if __name__ == "__main__":
             "Predicted Price of the house"
         )
         metric = st.metric(
-            label="Dollars (in USD)", value=locale.currency(st.session_state["Price"], grouping=True), 
+            label="Dollars (in USD)", value="{:,.2f}".format(st.session_state["Price"]), 
             delta="{:,.2f}".format(st.session_state["PriceChange"]))
