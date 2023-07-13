@@ -23,12 +23,9 @@ if __name__ == "__main__":
     lin_reg = pd.DataFrame(zip(columns, coefficients))
 
     if 'Price' not in st.session_state:
-        st.session_state['Price'] = df_summary_numerical['SalePrice']['mean']
+        st.session_state['Price'] = intercept
 
-    if 'PriceChange' not in st.session_state:
-        st.session_state['PriceChange'] = 0
-
-    get_all_input(df_summary_numerical,columns,coefficients)
+    get_all_input(df_summary_numerical,columns,coefficients,intercept)
 
     with st.sidebar:
         title = st.title(
@@ -36,4 +33,4 @@ if __name__ == "__main__":
         )
         metric = st.metric(
             label="Dollars (in USD)", value=locale.currency(st.session_state["Price"], grouping=True), 
-            delta=locale.currency(st.session_state["PriceChange"], grouping=True))
+            delta="{:,.2f}".format(st.session_state["PriceChange"]))

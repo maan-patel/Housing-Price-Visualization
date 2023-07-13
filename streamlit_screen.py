@@ -1,4 +1,6 @@
 import streamlit as st
+from streamlit_input import *
+
 
 def intro():
     st.title('Housing Prices Visualization')
@@ -9,39 +11,43 @@ def intro():
             result of a better understanding of the factors that influence house prices.
     ''')
 
-def get_all_input(df,columns,coefficients):
- 
-    radio_for_totalrooms(coefficients[columns.get_loc('TotRmsAbvGrd')], df['TotRmsAbvGrd']['min'],df['TotRmsAbvGrd']['max'])
-    number_for_square_footage(coefficients[columns.get_loc('LotArea')], df['LotArea']['min'],df['LotArea']['max'])
-    overall_condition(coefficients[columns.get_loc('OverallQual')], df['OverallQual']['min'],df['OverallQual']['max'])
+
+def get_all_input(df, columns, coefficients, intercept):
+
+    rooms = radio_for_totalrooms(coefficients[columns.get_loc(
+        'BedroomAbvGr')], df['BedroomAbvGr']['min'], df['BedroomAbvGr']['max'])
+    fullbath_rooms = radio_for_fullbathrooms(coefficients[columns.get_loc(
+        'FullBath')], df['FullBath']['min'], df['FullBath']['max'])
+    halfbath_rooms = radio_for_halfbathrooms(coefficients[columns.get_loc(
+        'HalfBath')], df['HalfBath']['min'], df['HalfBath']['max'])
+    footage = number_for_square_footage(coefficients[columns.get_loc(
+        'LotArea')], df['LotArea']['min'], df['LotArea']['max'])
+    condition = overall_condition(coefficients[columns.get_loc(
+        'OverallQual')], df['OverallQual']['min'], df['OverallQual']['max'])
+    cars = number_of_garage_cars(coefficients[columns.get_loc(
+        'GarageCars')], df['GarageCars']['min'], df['GarageCars']['max'])
+    old = overall_age(coefficients[columns.get_loc(
+        'YearBuilt')], 2011-int(df['YearBuilt']['min']), 2011-int(df['YearBuilt']['max']))
+    # deck_area = number_of_wodden_deck_area(coefficients[columns.get_loc(
+    #     'WoodDeckSF')], df['WoodDeckSF']['min'], df['WoodDeckSF']['max'])
+    pool_area = do_you_want_pool(coefficients[columns.get_loc(
+        'PoolArea')], df['PoolArea']['min'], df['PoolArea']['max'])
 
 
-def radio_for_totalrooms(coeff, min, max):
-    st.subheader("How many total rooms in the house do you want?")
-    totalRooms = st.slider('Slide to the desired number'
-                    , int(min), int(max), int((min+max)/2))
-    # st.write("On average, if a house has", totalRooms, "total rooms, the price of the house may be around $", coeff*totalRooms)
-    
-    # st.session_state['PriceChange'] = totalRooms
-    # st.session_state['Price'] = st.session_state['Price'] - totalRooms
-    
-def number_for_square_footage(coeff, min, max):
-    st.subheader("How much total Lot Area do you want? (in Sq Ft)")
-    number = st.number_input(f'Insert a number (min: {min}, max: {max})',min_value=int(min), max_value=int(max), step=100)
-    # st.write("On average, if a house has", number, "total rooms, the price of the house may be around $", coeff*number)
+    linear_regression_for_new_price = calculate_new_price(
+        intercept, columns, coefficients, rooms, 'TotRmsAbvGrd', footage, 'LotArea', condition,
+        'OverallQual', old, 'YearBuilt', pool_area, 'PoolArea',
+        fullbath_rooms, 'FullBath', halfbath_rooms, 'HalfBath', cars, 'GarageCars')
+    if 'PriceChange' not in st.session_state:
+        st.session_state['PriceChange'] = 0
+    else:
+        st.session_state['PriceChange'] = st.session_state["Price"] - \
+            linear_regression_for_new_price
+    st.session_state['Price'] = linear_regression_for_new_price
 
-def overall_condition(coeff, min, max):
-    st.subheader("How much overall condition you want? (Overall material and finish quality)")
-    number = st.number_input(f'Insert a number (min: {min}, max: {max})',min_value=int(min), max_value=int(max), step=1)
-    # st.write("On average, if a house has", number, "total condition, the price of the house may be around $", coeff*number)
 
-def overall_condition(coeff, min, max):
-    st.subheader("How much overall condition (material and finish quality) you want?")
-    number = st.number_input(f'Insert a number (min: {min}, max: {max})',min_value=int(min), max_value=int(max), step=1)
-    # st.write("On average, if a house has", number, "total condition, the price of the house may be around $", coeff*number)
-
-def overall_condition(coeff, min, max):
-    st.subheader("How much overall condition (material and finish quality) you want?")
-    number = st.number_input(f'Insert a number (min: {min}, max: {max})',min_value=int(min), max_value=int(max), step=1)
-    # st.write("On average, if a house has", number, "total condition, the price of the house may be around $", coeff*number)
-
+def calculate_new_price(intercept, columns, coefficients, *args):
+    price = intercept
+    for i in range(0, len(args), 2):
+        price += coefficients[columns.get_loc(args[i+1])] * args[i]
+    return price
