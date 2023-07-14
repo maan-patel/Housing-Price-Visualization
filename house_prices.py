@@ -28,6 +28,8 @@ if __name__ == "__main__":
 
     get_all_input(df_summary_numerical,columns,coefficients,intercept)
 
+    display_charts(df_summary_numerical, columns, coefficients)
+
     with st.sidebar:
         title = st.title(
             "Predicted Price of the house"
@@ -35,3 +37,4 @@ if __name__ == "__main__":
         metric = st.metric(
             label="Dollars (in USD)", value=locale.currency(st.session_state["Price"], grouping=True), 
             delta="{:,.2f}".format(st.session_state["PriceChange"]))
+
