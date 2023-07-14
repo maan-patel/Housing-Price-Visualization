@@ -6,6 +6,7 @@ from machine_learning_model import *
 from streamlit_screen import *
 import locale
 
+import charts as c
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -24,16 +25,10 @@ if __name__ == "__main__":
     columns = df.columns[1:-1]
     lin_reg = pd.DataFrame(zip(columns, coefficients))
 
-    if 'Price' not in st.session_state:
-        st.session_state['Price'] = intercept
 
-
-
- 
-
-    # # this changes the inputs with the sliders and calculates the price
     get_all_input(df_summary_numerical,columns,coefficients,intercept)
-   
+    display_charts(df_summary_numerical, columns, coefficients)
+    
     hist_data_ext_qual = [46765.50376, -11790.75027, -19896.26241, -15078.49108]
     hist_label_ext_qual = ["Excellent", "Good", "Average", "Fair"]
     ext_qual = pd.DataFrame({"Exterior Quality": hist_label_ext_qual, "$ (USD)": hist_data_ext_qual})
@@ -45,6 +40,8 @@ if __name__ == "__main__":
     central_air = pd.DataFrame({"Central Air": hist_label_central_air, "$ (USD)": hist_data_central_air})
     ax = central_air.plot.bar(x="Central Air", y="$ (USD)")
     st.bar_chart(central_air, x="Central Air", y="$ (USD)")
+    
+    
 
     hist_data_heat = [5181.41053, 514.522098, -756.287888, 3223.430193, -8163.074934]
     hist_label_heat = ["Excellent", "Good", "Average", "Fair", "Poor"]
@@ -65,13 +62,15 @@ if __name__ == "__main__":
     st.bar_chart(fire, x="Number of Garage Bays", y="$ (USD)")
 
     #  this displays the price 
+
     with st.sidebar:
         title = st.title(
             "Predicted Price of the house"
         )
         metric = st.metric(
-            label="Dollars (in USD)", value=locale.currency(st.session_state["Price"], grouping=True), 
+            label="Dollars (in USD)", value="{:,.2f}".format(st.session_state["Price"]), 
             delta="{:,.2f}".format(st.session_state["PriceChange"]))
+
 
 
         labels = st.session_state["PriceBreakdown"].keys()
@@ -81,3 +80,4 @@ if __name__ == "__main__":
         st.bar_chart(fire, x="Price Composition", y="$ (USD)")
 
   
+
