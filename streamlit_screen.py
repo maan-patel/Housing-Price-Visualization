@@ -71,7 +71,7 @@ def get_all_input(df, columns, coefficients, intercept):
         
     st.session_state["PriceBreakdown"] = get_price_breakdown(
         intercept, columns, coefficients, rooms, 'TotRmsAbvGrd', footage, 'LotArea', condition,
-        'OverallQual', old, 'YearBuilt', pool_area, 'PoolArea', fireplaces, 'Fireplaces',
+        'OverallQual', old, 'YearBuilt', fireplaces, 'Fireplaces',
         fullbath_rooms, 'FullBath', halfbath_rooms, 'HalfBath', cars, 'GarageCars') 
 
 
@@ -87,7 +87,7 @@ def calculate_new_price(intercept, columns, coefficients, *args):
 
 def get_price_breakdown(intercept, columns, coefficients, *args): 
     breakdown = {}
-    labels_dict = {"TotRmsAbvGrd": "Rooms",  "LotArea": "Lot Size",   "OverallQual" : "Exterior Quality", "YearBuilt" : "Age",  "PoolArea" : "Pool Size" , "Fireplaces" : "Fireplaces" ,  "FullBath" : "Full Bathrooms",  "HalfBath" : "Half Bathrooms",  "GarageCars": "Garage Size"}
+    labels_dict = {"TotRmsAbvGrd": "Rooms",  "LotArea": "Lot Size",   "OverallQual" : "Exterior Quality", "YearBuilt" : "Age", "Fireplaces" : "Fireplaces" ,  "FullBath" : "Full Bathrooms",  "HalfBath" : "Half Bathrooms",  "GarageCars": "Garage Size"}
     for i in range(0, len(args), 2):
         print(args[i+1])
         breakdown[labels_dict[args[i+1]]] = coefficients[columns.get_loc(args[i+1])] * args[i]
