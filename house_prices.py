@@ -77,7 +77,6 @@ if __name__ == "__main__":
             delta="{:,.2f}".format(st.session_state["PriceChange"]))
 
 
-        st.subheader("Affect on Price by Feature")
         labels = st.session_state["PriceBreakdown"].keys()
         sizes = st.session_state["PriceBreakdown"].values()
         fire = pd.DataFrame({"Price Composition": labels, "$ (USD)": sizes})
