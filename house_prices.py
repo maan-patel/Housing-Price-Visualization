@@ -22,7 +22,7 @@ if __name__ == "__main__":
     coefficients = reg.coef_
     columns = df.columns[1:-1]
     lin_reg = pd.DataFrame(zip(columns, coefficients))
-
+    
     if 'Price' not in st.session_state:
         st.session_state['Price'] = intercept
 
@@ -35,6 +35,6 @@ if __name__ == "__main__":
             "Predicted Price of the house"
         )
         metric = st.metric(
-            label="Dollars (in USD)", value=locale.currency(st.session_state["Price"], grouping=True), 
+            label="Dollars (in USD)", value="{:,.2f}".format(st.session_state["Price"]), 
             delta="{:,.2f}".format(st.session_state["PriceChange"]))
 
