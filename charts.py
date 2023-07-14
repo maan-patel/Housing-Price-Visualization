@@ -16,7 +16,7 @@ def garage_chart(df, columns, coefficients):
         },
     )
 
-    st.bar_chart(chart_data, x = "Number of Garage Spaces")
+    st.bar_chart(chart_data, x = "Value Added by Number of Cars Garage Holds")
 
 def fireplace_chart(df, columns, coefficients):
     coeff = coefficients[columns.get_loc('Fireplaces')]
