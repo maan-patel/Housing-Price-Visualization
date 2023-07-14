@@ -45,10 +45,25 @@ def get_all_input(df, columns, coefficients, intercept):
         st.session_state['PriceChange'] = st.session_state["Price"] - \
             linear_regression_for_new_price
     st.session_state['Price'] = linear_regression_for_new_price
-
+    st.session_state["PriceBreakdown"] = get_price_breakdown(
+        intercept, columns, coefficients, rooms, 'TotRmsAbvGrd', footage, 'LotArea', condition,
+        'OverallQual', old, 'YearBuilt', pool_area, 'PoolArea', fireplaces, 'Fireplaces',
+        fullbath_rooms, 'FullBath', halfbath_rooms, 'HalfBath', cars, 'GarageCars') 
 
 def calculate_new_price(intercept, columns, coefficients, *args):
     price = intercept
     for i in range(0, len(args), 2):
         price += coefficients[columns.get_loc(args[i+1])] * args[i]
+        print(args[i+1], coefficients[columns.get_loc(args[i+1])] * args[i])
     return price
+
+def get_price_breakdown(intercept, columns, coefficients, *args): 
+    breakdown = {}
+    labels_dict = {"TotRmsAbvGrd": "Rooms",  "LotArea": "Lot Size",   "OverallQual" : "Exterior Quality", "YearBuilt" : "Age",  "PoolArea" : "Pool Size" , "Fireplaces" : "Fireplaces" ,  "FullBath" : "Full Bathrooms",  "HalfBath" : "Half Bathrooms",  "GarageCars": "Garage Size"}
+    for i in range(0, len(args), 2):
+        print(args[i+1])
+        breakdown[labels_dict[args[i+1]]] = coefficients[columns.get_loc(args[i+1])] * args[i]
+    return breakdown
+
+
+
