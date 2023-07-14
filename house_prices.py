@@ -4,10 +4,6 @@ import numpy as np
 import pandas as pd
 from machine_learning_model import *
 from streamlit_screen import *
-import locale
-
-
-locale.setlocale(locale.LC_ALL, '')
 
 if __name__ == "__main__":
 
@@ -24,14 +20,8 @@ if __name__ == "__main__":
     columns = df.columns[1:-1]
     lin_reg = pd.DataFrame(zip(columns, coefficients))
 
-    if 'Price' not in st.session_state:
-        st.session_state['Price'] = intercept
 
 
-
- 
-
-    # # this changes the inputs with the sliders and calculates the price
     get_all_input(df_summary_numerical,columns,coefficients,intercept)
    
     hist_data_ext_qual = [46765.50376, -11790.75027, -19896.26241, -15078.49108]
@@ -70,7 +60,7 @@ if __name__ == "__main__":
             "Predicted Price of the house"
         )
         metric = st.metric(
-            label="Dollars (in USD)", value=locale.currency(st.session_state["Price"], grouping=True), 
+            label="Dollars (in USD)", value="{:,.2f}".format(st.session_state["Price"]), 
             delta="{:,.2f}".format(st.session_state["PriceChange"]))
 
 
