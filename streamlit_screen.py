@@ -48,7 +48,11 @@ def get_all_input(df, columns, coefficients, intercept):
     else:
         st.session_state['PriceChange'] = st.session_state["Price"] - \
             linear_regression_for_new_price
-    st.session_state['Price'] = linear_regression_for_new_price
+            
+    if 'Price' not in st.session_state:
+        st.session_state['Price'] = intercept
+    else:
+        st.session_state['Price'] = linear_regression_for_new_price
 
 
 def calculate_new_price(intercept, columns, coefficients, *args):
