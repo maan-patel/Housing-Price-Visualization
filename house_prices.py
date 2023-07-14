@@ -4,6 +4,9 @@ import numpy as np
 import pandas as pd
 from machine_learning_model import *
 from streamlit_screen import *
+import locale
+import charts as c
+locale.setlocale(locale.LC_ALL, '')
 
 if __name__ == "__main__":
 
@@ -24,6 +27,8 @@ if __name__ == "__main__":
 
     get_all_input(df_summary_numerical,columns,coefficients,intercept)
    
+    display_charts(df_summary_numerical, columns, coefficients)
+  
     hist_data_ext_qual = [46765.50376, -11790.75027, -19896.26241, -15078.49108]
     hist_label_ext_qual = ["Excellent", "Good", "Average", "Fair"]
     ext_qual = pd.DataFrame({"Exterior Quality": hist_label_ext_qual, "$ (USD)": hist_data_ext_qual})
@@ -48,13 +53,14 @@ if __name__ == "__main__":
     ax = fire.plot.bar(x="Number of Fireplaces", y="$ (USD)")
     st.bar_chart(fire, x="Number of Fireplaces", y="$ (USD)")
 
+
     hist_data_garage = [13710.65123, 27421.30247, 41131.9537, 54842.60493]
     hist_label_garage = [1,2,3,4]
     fire = pd.DataFrame({"Number of Garage Bays": hist_label_garage, "$ (USD)": hist_data_garage})
     ax = fire.plot.bar(x="Number of Garage Bays", y="$ (USD)")
     st.bar_chart(fire, x="Number of Garage Bays", y="$ (USD)")
 
-    #  this displays the price 
+
     with st.sidebar:
         title = st.title(
             "Predicted Price of the house"
@@ -71,3 +77,4 @@ if __name__ == "__main__":
         st.bar_chart(fire, x="Price Composition", y="$ (USD)")
 
   
+
