@@ -15,10 +15,10 @@ def intro():
 def display_charts(df, columns, coefficients):
     st.header("How do different features affect the price of housing?")
 
-    st.subheader("Does the home contain a fireplace?")
+    st.subheader("Value Added by Number of Fireplaces")
     c.fireplace_chart(df, columns, coefficients)
 
-    st.subheader("How many cars does the garage hold?")
+    st.subheader("Value Added by Number of Cars Garage Holds")
     c.garage_chart(df, columns, coefficients)
 
 def get_all_input(df, columns, coefficients, intercept):
