@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_input import *
+import charts as c
 
 
 def intro():
@@ -11,6 +12,14 @@ def intro():
             result of a better understanding of the factors that influence house prices.
     ''')
 
+def display_charts(df, columns, coefficients):
+    st.header("How do different features affect the price of housing?")
+
+    st.subheader("Value Added by Number of Fireplaces")
+    c.fireplace_chart(df, columns, coefficients)
+
+    st.subheader("Value Added by Number of Cars Garage Holds")
+    c.garage_chart(df, columns, coefficients)
 
 def get_all_input(df, columns, coefficients, intercept):
     rooms = radio_for_totalrooms(coefficients[columns.get_loc(
@@ -23,8 +32,12 @@ def get_all_input(df, columns, coefficients, intercept):
         'LotArea')], df['LotArea']['min'], df['LotArea']['max'])
     condition = overall_condition(coefficients[columns.get_loc(
         'OverallQual')], df['OverallQual']['min'], df['OverallQual']['max'])
-    cars = number_of_garage_cars(coefficients[columns.get_loc(
-        'GarageCars')], df['GarageCars']['min'], df['GarageCars']['max'])
+
+    cars = number_of_garage_cars(
+    coefficients[columns.get_loc('GarageCars')],
+    df['GarageCars']['min'],
+    df['GarageCars']['max'])
+
     old = overall_age(coefficients[columns.get_loc(
         'YearBuilt')], 2011-int(df['YearBuilt']['min']), 2011-int(df['YearBuilt']['max']))
     renovated = overall_reno_age(coefficients[columns.get_loc(
@@ -53,7 +66,6 @@ def get_all_input(df, columns, coefficients, intercept):
         st.session_state['Price'] = intercept
     else:
         st.session_state['Price'] = linear_regression_for_new_price
-
 
 def calculate_new_price(intercept, columns, coefficients, *args):
     price = intercept
